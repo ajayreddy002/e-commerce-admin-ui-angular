@@ -1,0 +1,190 @@
+<div>
+  <div
+    class="px-2 my-3 action-block d-flex align-items-center justify-content-end"
+    *ngIf="!isFormShow"
+  >
+    <button class="btn btn-primary" (click)="isFormShow = true">
+      + Add product
+    </button>
+  </div>
+  <div class="card" *ngIf="!isFormShow">
+    <div>
+      <h2 class="mb-3">Products</h2>
+    </div>
+    <p-table [value]="products" [tableStyle]="{ 'min-width': '60rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Image</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>
+            <img
+              [src]="baseUrl + '/' + product.images[0]"
+              [alt]="product.name"
+              width="100"
+              class="shadow-4"
+            />
+            <span *ngIf="product?.images?.length > 1"
+              >+ {{ product?.images?.length - 2 }}</span
+            >
+          </td>
+          <td>{{ product.price | currency : "USD" }}</td>
+          <td>{{ product.category }}</td>
+          <td>
+            <button class="btn btn-sm btn-primary">
+              <i class="pi pi-eye"></i>
+            </button>
+            <button class="btn btn-sm btn-danger ms-3" (click)="deleteProduct(product.id)">
+              <i class="pi pi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+          In total there are {{ products ? products.length : 0 }} products.
+        </div>
+      </ng-template>
+    </p-table>
+  </div>
+  <!-- Create product form -->
+  <div *ngIf="isFormShow" class="mt-4">
+    <div class="card">
+      <div>
+        <h2 class="mb-3">Add Product</h2>
+      </div>
+      <form action="" [formGroup]="productForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label class="mb-1" for="name">Product Name</label>
+              <input
+                formControlName="name"
+                type="text"
+                name="name"
+                id="name"
+                class="form-control"
+              />
+              <div
+                class="err-msg"
+                *ngIf="isFormInvalid && productForm.controls['name'].errors?.['required']"
+              >
+                Please enter product name
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label class="mb-1" for="name">Product images</label>
+              <input
+                type="file"
+                multiple
+                accept="image/png, image/jpeg"
+                name="name"
+                id="name"
+                class="form-control"
+                (change)="onFileChange($event)"
+              />
+              <div class="err-msg" *ngIf="isFormInvalid && files.length < 1">
+                Please select at least one image
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label class="mb-1" for="price">Product price</label>
+              <input
+                formControlName="price"
+                type="text"
+                name="price"
+                id="price"
+                class="form-control"
+              />
+              <div
+                class="err-msg"
+                *ngIf="isFormInvalid && productForm.controls['price'].errors?.['required']"
+              >
+                Please enter product price
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="form-group">
+              <label class="mb-1" for="category">Product category</label>
+              <select
+                formControlName="category"
+                name="category"
+                id="category"
+                class="form-select"
+              >
+                <option value="" disabled selected>
+                  Please select category
+                </option>
+                <option
+                  *ngFor="let category of categories"
+                  [value]="category.category_name"
+                >
+                  {{ category.category_name }}
+                </option>
+              </select>
+              <div
+                class="err-msg"
+                *ngIf="isFormInvalid && productForm.controls['category'].errors?.['required']"
+              >
+                Please select sub category
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="mb-1" for="sub_category"
+                >Product sub category</label
+              >
+              <select
+                formControlName="sub_category"
+                name="sub_category"
+                id="sub_category"
+                class="form-select"
+              >
+                <option value="" disabled selected>
+                  Please select sub category
+                </option>
+                <option
+                  *ngFor="let sub_category of subCategories"
+                  [value]="sub_category.name"
+                >
+                  {{ sub_category.name }}
+                </option>
+              </select>
+              <div
+                class="err-msg"
+                *ngIf="isFormInvalid && productForm.controls['sub_category'].errors?.['required']"
+              >
+                Please select sub category
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div
+        class="mt-4 btn-block d-flex align-items-center justify-content-center"
+      >
+        <button class="btn btn-outline-secondary me-5">Cancel</button>
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="onFormSubmit()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

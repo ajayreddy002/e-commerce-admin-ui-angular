@@ -1,0 +1,24 @@
+.card {
+    background: #FFFFFF;
+    border: 1px solid #dfe7ef;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15);
+    border-radius: 12px;
+}
+.form-group {
+    margin-top: 10px;
+}
+.err-msg {
+    position: absolute;
+    color: red;
+    font-size: 14px;
+}
+input:focus, select:focus{
+    outline: none;
+    box-shadow: none;
+}
+input, label {
+    font-size: 14px;
+    font-weight: 500;
+}
